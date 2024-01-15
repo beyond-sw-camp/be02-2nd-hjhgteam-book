@@ -25,5 +25,4 @@ public class EmailAuthenticationReq {
     private String uuid;
     @ApiParam(value = "회원의 JWT를 입력", required = true)
     private String jwt;
-
 }

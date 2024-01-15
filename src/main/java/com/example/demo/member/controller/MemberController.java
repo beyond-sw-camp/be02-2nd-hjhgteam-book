@@ -1,9 +1,7 @@
 package com.example.demo.member.controller;
 
-import com.example.demo.member.model.dto.request.EmailAuthenticationReq;
-import com.example.demo.member.model.dto.request.MemberLoginReq;
-import com.example.demo.member.model.dto.request.MemberSignupReq;
-import com.example.demo.member.model.dto.request.MemberUpdateReq;
+import com.example.demo.member.model.Membership;
+import com.example.demo.member.model.dto.request.*;
 import com.example.demo.member.model.dto.response.MemberLoginRes;
 import com.example.demo.member.service.EmailAuthenticationService;
 import com.example.demo.member.service.MemberService;
@@ -32,6 +30,7 @@ public class MemberController {
         }
         return ResponseEntity.ok().body("fail");
     }
+
     @ApiOperation(value = "이메일 인증")
     @RequestMapping(method = RequestMethod.GET, value = "/verify")
     public ResponseEntity verifyEmail(EmailAuthenticationReq emailAuthenticaitonReq) {
@@ -60,9 +59,21 @@ public class MemberController {
         return ResponseEntity.ok().body("ok");
     }
 
+    @ApiOperation(value = "멤버십 생성")
+    @RequestMapping(method = RequestMethod.POST, value = "/createmembership")
+    public ResponseEntity createMembership(MembershipReq membershipReq) {
+        service.createMembership(membershipReq);
+        return ResponseEntity.ok().body("ok");
+    }
+
     @ApiOperation(value = "회원 멤버십 결제")
-    @RequestMapping(method = RequestMethod.POST, value = "/membership")
-    public ResponseEntity membership() {
-        return ResponseEntity.ok().body("");
+    @RequestMapping(method = RequestMethod.POST, value = "/paymembership")
+    public ResponseEntity membership(String impUid) {
+        try {
+            service.membership(impUid);
+        }catch (Exception e) {
+        }
+
+        return ResponseEntity.ok().body("결제완료");
     }
 }

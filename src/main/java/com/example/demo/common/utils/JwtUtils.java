@@ -1,4 +1,4 @@
-package com.example.demo.utils;
+package com.example.demo.common.utils;
 
 import com.example.demo.member.model.Member;
 import com.example.demo.member.repository.MemberRepository;

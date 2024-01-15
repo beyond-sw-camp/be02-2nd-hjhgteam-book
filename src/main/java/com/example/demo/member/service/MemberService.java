@@ -7,7 +7,7 @@ import com.example.demo.member.model.Membership;
 import com.example.demo.member.model.dto.request.*;
 import com.example.demo.member.repository.MemberRepository;
 import com.example.demo.member.repository.MembershipRepository;
-import com.example.demo.utils.JwtUtils;
+import com.example.demo.common.utils.JwtUtils;
 import com.google.gson.Gson;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -121,6 +121,16 @@ public class MemberService {
         }
     }
 
+    public void withdraw(String email) {
+        Optional<Member> result = repository.findByEmail(email);
+        if (result.isPresent()) {
+            Member member = result.get();
+            member.setAuthority("ROLE_WITHDRAW");
+            member.setStatus(false);
+            repository.save(member);
+        }
+    }
+
     public String makeFolder() {
         String str = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
         String folderPath = str.replace("/", File.separator);
@@ -148,6 +158,13 @@ public class MemberService {
         return s3.getUrl(bucket, saveFileName.replace(File.separator, "/")).toString();
     }
 
+    public void createMembership(MembershipReq membershipReq) {
+        membershipRepository.save(Membership.builder()
+                .membershipPrice(membershipReq.getMembershipPrice())
+                .authority(membershipReq.getAuthority())
+                .build());
+    }
+
     public Boolean membership(String impUid) throws IamportResponseException, IOException {
         IamportResponse<Payment> response = getPaymentInfo(impUid);
         Integer amount = response.getResponse().getAmount().intValue();
@@ -164,7 +181,6 @@ public class MemberService {
                     .build());
             return true;
         }
-
         return false;
     }
 

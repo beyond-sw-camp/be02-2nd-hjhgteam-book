@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.example.demo.common.config;
 
 import com.siot.IamportRestClient.IamportClient;
 import org.springframework.beans.factory.annotation.Value;

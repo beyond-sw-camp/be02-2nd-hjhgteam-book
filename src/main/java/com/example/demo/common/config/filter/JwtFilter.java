@@ -1,8 +1,8 @@
-package com.example.demo.config.filter;
+package com.example.demo.common.config.filter;
 
 import com.example.demo.member.model.Member;
 import com.example.demo.member.repository.MemberRepository;
-import com.example.demo.utils.JwtUtils;
+import com.example.demo.common.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,7 +1,6 @@
-package com.example.demo.config;
+package com.example.demo.common.config;
 
-import com.example.demo.config.filter.JwtFilter;
-import com.example.demo.member.service.MemberService;
+import com.example.demo.common.config.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +32,7 @@ public class SecurityConfig {
             http.csrf().disable()
                     .authorizeRequests()
                     .antMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                    .antMatchers("/member/update").hasRole("USER")
+//                    .antMatchers("/member/update").hasRole("USER")
                     .antMatchers("/**").permitAll()
                     .anyRequest().authenticated();
             http.addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class);

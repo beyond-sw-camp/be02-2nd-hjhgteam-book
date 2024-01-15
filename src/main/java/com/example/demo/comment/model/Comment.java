@@ -21,6 +21,9 @@ public class Comment {
     @Column(length = 200)
     private String comment;
 
+    @Column(length = 5)
+    private Integer rate;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
