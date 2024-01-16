@@ -3,14 +3,10 @@ package com.example.demo.common.config.filter;
 import com.example.demo.member.model.Member;
 import com.example.demo.member.repository.MemberRepository;
 import com.example.demo.common.utils.JwtUtils;
-import com.example.demo.member.service.UserDetailsServiceImpl;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;

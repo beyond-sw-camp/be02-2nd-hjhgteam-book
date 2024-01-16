@@ -1,7 +1,5 @@
 package com.example.demo.common.utils;
 
-import com.example.demo.member.model.Member;
-import com.example.demo.member.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -9,7 +7,6 @@ import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.Optional;
 
 public class JwtUtils {
 
@@ -32,7 +29,6 @@ public class JwtUtils {
     }
 
     public static Boolean validate(String token, String username, String key) {
-//        String usernameByToken = getUsername(token, username);
         String usernameByToken = getUsername(token, key);
 
         Date expireTime = extractAllClaims(token, key).getExpiration();
