@@ -3,10 +3,12 @@ package com.example.demo.comment.service;
 import com.example.demo.comment.model.Comment;
 import com.example.demo.comment.model.dto.request.CommentReq;
 import com.example.demo.comment.model.dto.request.UpdateCommentReq;
+import com.example.demo.comment.model.dto.response.CommentRes;
 import com.example.demo.comment.repository.CommentRepository;
 import com.example.demo.content.model.Content;
 import com.example.demo.content.repository.ContentRepository;
 import com.example.demo.member.model.Member;
+import com.example.demo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,25 +24,37 @@ import java.util.Optional;
 public class CommentService {
     private final CommentRepository repository;
     private final ContentRepository contentRepository;
+    private final MemberRepository memberRepository;
 
-    public void createComment(CommentReq commentReq, Member member, Long contentId) {
-        Optional<Content> contentResult = contentRepository.findById(contentId);
+    public void createComment(CommentReq commentReq, Member member) {
+        Optional<Content> contentResult = contentRepository.findById(commentReq.getContentId());
+        Optional<Member> memberResult = memberRepository.findByEmail(member.getEmail());
 
         Content content = contentResult.get();
 
         repository.save(Comment.builder()
                 .comment(commentReq.getComment())
                 .rate(commentReq.getRate())
-                .member(member)
+                .member(memberResult.get())
                 .content(content)
                 .build());
     }
 
-    public Page<Comment> list(Integer page, Integer size) {
+    public List<CommentRes> list(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Comment> result = repository.findList(pageable);
 
-            return result;
+        List<CommentRes> commentResList = new ArrayList<>();
+        for (Comment comment : result.getContent()) {
+            CommentRes commentRes = CommentRes.builder()
+                    .id(comment.getId())
+                    .comment(comment.getComment())
+                    .rate(comment.getRate())
+                    .member(comment.getMember())
+                    .content(comment.getContent()).build();
+            commentResList.add(commentRes);
+        }
+            return commentResList;
     }
 
     public Comment readComment(Long id) {

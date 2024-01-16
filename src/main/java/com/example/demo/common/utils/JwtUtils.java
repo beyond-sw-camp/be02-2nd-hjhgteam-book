@@ -13,14 +13,14 @@ import java.util.Optional;
 
 public class JwtUtils {
 
-    public static String generateAccessToken(String username, String key, int expiredTimeMs) {
+    public static String generateAccessToken(String email, String key, int expiredTimeMs) {
         Claims claims = Jwts.claims();
-        claims.put("email", username);
+        claims.put("username", email);
 
         String token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date((System.currentTimeMillis() + expiredTimeMs)*1000))
+                .setExpiration(new Date((System.currentTimeMillis()*60*10 + expiredTimeMs)*1000))
                 .signWith(getSignKey(key), SignatureAlgorithm.HS256)
                 .compact();
 
@@ -31,19 +31,18 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    public static Boolean validate(String token, String key) {
+    public static Boolean validate(String token, String username, String key) {
 //        String usernameByToken = getUsername(token, username);
         String usernameByToken = getUsername(token, key);
 
         Date expireTime = extractAllClaims(token, key).getExpiration();
         Boolean result = expireTime.before(new Date(System.currentTimeMillis()));
 
-        return !result;
+        return usernameByToken.equals(username) && !result;
     }
 
     public static String getUsername(String token, String key) {
         return extractAllClaims(token, key).get("username", String.class);
-
     }
 
     public static Claims extractAllClaims(String token, String key) {

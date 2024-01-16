@@ -3,10 +3,14 @@ package com.example.demo.common.config.filter;
 import com.example.demo.member.model.Member;
 import com.example.demo.member.repository.MemberRepository;
 import com.example.demo.common.utils.JwtUtils;
+import com.example.demo.member.service.UserDetailsServiceImpl;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -19,6 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final String secretKey;
+    private final MemberRepository repository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -37,14 +42,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String username = JwtUtils.getUsername(token, secretKey);
 
-        if (!JwtUtils.validate(token, secretKey)) {
+        if (!JwtUtils.validate(token, username, secretKey)) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        MemberRepository repository = null;
         Optional<Member> result = repository.findByEmail(username);
         Member member = result.get();
+
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                 Member.builder().email(username).build(), null,

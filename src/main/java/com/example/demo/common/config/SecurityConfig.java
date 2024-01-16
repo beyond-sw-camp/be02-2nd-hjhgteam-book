@@ -1,6 +1,7 @@
 package com.example.demo.common.config;
 
 import com.example.demo.common.config.filter.JwtFilter;
+import com.example.demo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final MemberRepository repository;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
@@ -34,8 +36,9 @@ public class SecurityConfig {
                     .antMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
 //                    .antMatchers("/member/update").hasRole("USER")
                     .antMatchers("/**").permitAll()
+//                    .antMatchers("/member/**").permitAll()
                     .anyRequest().authenticated();
-            http.addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class);
+            http.addFilterBefore(new JwtFilter(secretKey, repository), UsernamePasswordAuthenticationFilter.class);
             http.formLogin().disable();
             http.sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

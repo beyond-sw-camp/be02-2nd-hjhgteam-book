@@ -8,4 +8,5 @@ import lombok.Getter;
 public class CommentReq {
     String comment;
     Integer rate;
+    Long contentId;
 }
