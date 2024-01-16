@@ -49,10 +49,6 @@ public class Member implements UserDetails {
 
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
-    private List<Follow> follows = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
