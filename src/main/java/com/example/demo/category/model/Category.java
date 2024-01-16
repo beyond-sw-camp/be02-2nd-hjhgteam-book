@@ -1,6 +1,5 @@
 package com.example.demo.category.model;
 
-import com.example.demo.manageCategory.model.ManageCategory;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +21,4 @@ public class Category {
     @Column(length = 20)
     private String name;
 
-    @OneToMany(mappedBy = "category")
-    private List<ManageCategory> manageCategories = new ArrayList<>();
 }
