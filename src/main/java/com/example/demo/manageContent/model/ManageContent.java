@@ -16,13 +16,14 @@ import javax.persistence.*;
 public class ManageContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "collection_id")
-    private Collection collection;
 
-    @ManyToOne
-    @JoinColumn(name = "content_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Content_id")
     private Content content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Collection_id")
+    private Collection collection;
 }
