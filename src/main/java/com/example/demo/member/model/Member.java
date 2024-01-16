@@ -3,7 +3,6 @@ package com.example.demo.member.model;
 import com.example.demo.chat.model.Chat;
 import com.example.demo.comment.model.Comment;
 import com.example.demo.follow.model.Follow;
-import com.example.demo.rate.model.Rate;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -51,9 +50,6 @@ public class Member implements UserDetails {
     @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    @JsonManagedReference
-    private List<Rate> rates = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

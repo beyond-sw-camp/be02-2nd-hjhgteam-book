@@ -91,12 +91,19 @@ public class MemberService {
     }
 
     public String login(MemberLoginReq memberLoginReq) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(memberLoginReq.getEmail(), memberLoginReq.getPassword())
-        );
+        Optional<Member> result = repository.findByEmail(memberLoginReq.getEmail());
 
-        if (authentication.isAuthenticated()) {
-            return JwtUtils.generateAccessToken(memberLoginReq.getEmail(), secretKey, expiredTimeMs);
+        if (result.isPresent()) {
+            Member member = result.get();
+            if (member.getPassword().equals(passwordEncoder.encode(memberLoginReq.getPassword()))) {
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(memberLoginReq.getEmail(), memberLoginReq.getPassword())
+                );
+
+                if (authentication.isAuthenticated()) {
+                    return JwtUtils.generateAccessToken(memberLoginReq.getEmail(), secretKey, expiredTimeMs);
+                }
+            }
         }
         return null;
     }
@@ -115,7 +122,7 @@ public class MemberService {
         if (result.isPresent()) {
             Member member = result.get();
             if (memberUpdateReq.getPassword() != null)
-                member.setPassword(memberUpdateReq.getPassword());
+                member.setPassword(passwordEncoder.encode(memberUpdateReq.getPassword()));
             if (memberUpdateReq.getNickname() != null)
                 member.setNickname(memberUpdateReq.getNickname());
             if (path != null)

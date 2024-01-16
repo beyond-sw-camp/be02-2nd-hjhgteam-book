@@ -1,6 +1,5 @@
 package com.example.demo.collection.model;
 
-import com.example.demo.manageContent.model.ManageContent;
 import com.example.demo.member.model.Member;
 import lombok.*;
 
@@ -52,6 +51,7 @@ public class Collection {
     @JoinColumn(name = "Member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
-    private List<ManageContent> manageContentList = new ArrayList<>();
+//    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
+//    private List<ManageContent> manageContentList = new ArrayList<>();
+
 }
