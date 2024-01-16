@@ -6,6 +6,7 @@ import com.example.demo.manageCategory.model.ManageCategory;
 import com.example.demo.manageContent.model.ManageContent;
 import com.example.demo.own.model.Own;
 import com.example.demo.rate.model.Rate;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,20 +31,26 @@ public class Content {
     private byte classify;
 
     @OneToMany(mappedBy = "content")
+    @JsonManagedReference
     private List<Livetalk> livetalkList = new ArrayList<>();
 
     @OneToMany(mappedBy = "content")
+    @JsonManagedReference
     private List<ManageContent> manageContents = new ArrayList<>();
 
     @OneToMany(mappedBy = "content")
+    @JsonManagedReference
     private List<ManageCategory> manageCategories = new ArrayList<>();
 
     @OneToMany(mappedBy = "content")
+    @JsonManagedReference
     private List<Own> owns = new ArrayList<>();
 
     @OneToMany(mappedBy = "content")
+    @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "content")
+    @JsonManagedReference
     private List<Rate> rates = new ArrayList<>();
 }

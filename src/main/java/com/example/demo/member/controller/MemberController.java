@@ -5,9 +5,12 @@ import com.example.demo.member.model.dto.request.*;
 import com.example.demo.member.model.dto.response.MemberLoginRes;
 import com.example.demo.member.service.EmailAuthenticationService;
 import com.example.demo.member.service.MemberService;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +22,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class MemberController {
     private final MemberService service;
     private final EmailAuthenticationService emailAuthenticationService;
+
+    @Value("${imp.imp_key}")
+    private String apiKey;
+    @Value("${imp.imp_secret}")
+    private String apiSecret;
 
     @ApiOperation(value = "회원가입")
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
@@ -67,13 +75,20 @@ public class MemberController {
     }
 
     @ApiOperation(value = "회원 멤버십 결제")
-    @RequestMapping(method = RequestMethod.POST, value = "/paymembership")
+    @RequestMapping(method = RequestMethod.GET, value = "/paymembership")
     public ResponseEntity membership(String impUid) {
         try {
-            service.membership(impUid);
+            if (service.membership(impUid)) {
+                return ResponseEntity.ok().body("결제완료");
+            } else {
+                String reason = "결제 실패";
+                IamportResponse<Payment> response = service.getPaymentInfo(impUid);
+                service.refundRequest(service.getToken(apiKey, apiSecret), response.getResponse().getMerchantUid(), reason);
+            }
         }catch (Exception e) {
+            e.printStackTrace();
         }
-
-        return ResponseEntity.ok().body("결제완료");
+        return ResponseEntity.ok().body("결제실패");
     }
+
 }

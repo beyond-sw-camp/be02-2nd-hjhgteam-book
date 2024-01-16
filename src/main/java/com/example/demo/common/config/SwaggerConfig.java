@@ -24,8 +24,7 @@ public class SwaggerConfig {
                 .securitySchemes(Arrays.asList(apiKey()))
                 .select()
                 .apis(
-                        RequestHandlerSelectors.basePackage("com.example.demo.member")
-                                .or(RequestHandlerSelectors.basePackage("com.example.demo.product"))
+                        RequestHandlerSelectors.any()
                 )
                 .paths(PathSelectors.any())
                 .build()

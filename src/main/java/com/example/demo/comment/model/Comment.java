@@ -2,6 +2,7 @@ package com.example.demo.comment.model;
 
 import com.example.demo.content.model.Content;
 import com.example.demo.member.model.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -26,9 +27,11 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @JsonBackReference
     private Member member;
 
     @ManyToOne
     @JoinColumn(name = "content_id")
+    @JsonBackReference
     private Content content;
 }
