@@ -24,19 +24,19 @@
 
 ## 프로젝트 설계
 
-소프트웨어 아키텍처  
+시스템 아키텍처  
 <div align="center">
-  <img src="/image/11.jpeg"  style="zoom:76%;" align="center"/>
+  <img src="/etc/11.jpeg"  style="zoom:76%;" align="center"/>
 </div>
-시스템 아키텍처
+소프트웨어 아키텍처
 <div align="center">
-  <img src="/image/22.jpeg"  style="zoom:76%;" align="center"/>
+  <img src="/etc/22.jpeg"  style="zoom:76%;" align="center"/>
 </div>
 
 
 ## 🔍 요구사항 명세서
 
-요구 사항 정의
+요구 사항 정의서는 etc 폴더에 docx 참고
 
 
 ## 기능 명세서
