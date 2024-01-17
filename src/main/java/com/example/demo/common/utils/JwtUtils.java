@@ -10,7 +10,23 @@ import java.util.Date;
 
 public class JwtUtils {
 
-    public static String generateAccessToken(String email, String key, int expiredTimeMs) {
+    public static String generateLoginAccessToken(String email, Long id, String key, int expiredTimeMs) {
+        Claims claims = Jwts.claims();
+        claims.put("username", email);
+        claims.put("id", id);
+
+
+        String token = Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date((System.currentTimeMillis()*60*10 + expiredTimeMs)*1000))
+                .signWith(getSignKey(key), SignatureAlgorithm.HS256)
+                .compact();
+
+        return token;
+    }
+
+    public static String generateSignUpAccessToken(String email, String key, int expiredTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("username", email);
 
@@ -39,6 +55,10 @@ public class JwtUtils {
 
     public static String getUsername(String token, String key) {
         return extractAllClaims(token, key).get("username", String.class);
+    }
+
+    public static Long getUserId(String token, String key) {
+        return extractAllClaims(token, key).get("id", Long.class);
     }
 
     public static Claims extractAllClaims(String token, String key) {

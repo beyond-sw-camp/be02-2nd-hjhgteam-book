@@ -1,7 +1,6 @@
 package com.example.demo.follow.service;
 
 import com.example.demo.follow.model.Follow;
-import com.example.demo.follow.model.dto.request.FollowReq;
 import com.example.demo.follow.repository.FollowRepository;
 import com.example.demo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +15,15 @@ public class FollowService {
     private final MemberRepository memberRepository;
     private final FollowRepository followRepository;
 
-    public void followMember(FollowReq memberFollowReq) {
+    public void followMember(Long follower_id, Long following_id) {
 
-        int followState = followRepository.followState(memberFollowReq.getFollower_id(), memberFollowReq.getFollowing_id());
+        int followState = followRepository.followState(follower_id, following_id);
         if (followState == 0) {
             followRepository.save(Follow.builder()
-                    .follower_id(memberFollowReq.getFollower_id())
-                    .following_id(memberFollowReq.getFollowing_id()).build());
+                    .follower_id(follower_id)
+                    .following_id(following_id).build());
         }else {
-            followRepository.unFollow(memberFollowReq.getFollower_id(), memberFollowReq.getFollowing_id());
+            followRepository.unFollow(follower_id, following_id);
         }
     }
 

@@ -74,9 +74,9 @@ public class MemberService {
     public void sendEmail(MemberSignupReq memberSignupReq) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(memberSignupReq.getEmail());
-        message.setSubject("[심마켓] 이메일 인증");
+        message.setSubject("[BOOKSPEDIA] 이메일 인증");
         String uuid = UUID.randomUUID().toString();
-        String jwt = JwtUtils.generateAccessToken(memberSignupReq.getEmail(), secretKey, expiredTimeMs);
+        String jwt = JwtUtils.generateSignUpAccessToken(memberSignupReq.getEmail(), secretKey, expiredTimeMs);
         message.setText("http://localhost:8080/member/verify?email="
                 +memberSignupReq.getEmail()
                 +"&uuid="+uuid
@@ -95,13 +95,15 @@ public class MemberService {
 
         if (result.isPresent()) {
             Member member = result.get();
-            if (member.getPassword().equals(passwordEncoder.encode(memberLoginReq.getPassword()))) {
+
+            Boolean passwordCheck = passwordEncoder.matches(memberLoginReq.getPassword(), member.getPassword());
+            if (passwordCheck) {
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(memberLoginReq.getEmail(), memberLoginReq.getPassword())
                 );
 
                 if (authentication.isAuthenticated()) {
-                    return JwtUtils.generateAccessToken(memberLoginReq.getEmail(), secretKey, expiredTimeMs);
+                    return JwtUtils.generateLoginAccessToken(memberLoginReq.getEmail(), member.getId(), secretKey, expiredTimeMs);
                 }
             }
         }

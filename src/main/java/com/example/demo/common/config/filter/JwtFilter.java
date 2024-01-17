@@ -37,6 +37,8 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String username = JwtUtils.getUsername(token, secretKey);
+        Long userId = JwtUtils.getUserId(token, secretKey);
+
 
         if (!JwtUtils.validate(token, username, secretKey)) {
             filterChain.doFilter(request, response);
@@ -48,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                Member.builder().email(username).build(), null,
+                Member.builder().id(userId).email(username).build(), null,
                 member.getAuthorities()
         );
 
