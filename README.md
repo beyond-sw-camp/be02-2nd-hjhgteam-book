@@ -1,4 +1,4 @@
-<h1 align="center">주제 👍</h1>
+<h1 align="center"> BOOKSPEDIA 👍</h1>
 
 
 <div align="center">
@@ -10,24 +10,28 @@
 > [플레이 데이터] 한화시스템 BEYOND SW캠프 / HJHG..
 
 
-🎬[Demo 시연영상](https://www.youtube.com/watch?v=dhMrKTwNI8U&lc=UgzCJR3WxkvsckRyyO94AaABAg&ab_channel=%EB%94%B0%EB%9D%BC%ED%95%98%EB%A9%B4%EC%84%9C%EB%B0%B0%EC%9A%B0%EB%8A%94IT)   
-📃[프로젝트 회고록](블로그주소) 
+
 
 <br>
 
 ## ✨ 프로젝트 설명
-
-```sh
-저희 서비스는 사용자가 본 웹툰/웹소설에 대해 별점 및 리뷰를 남기고 컬렉션을 만들어 공유할 수 있습니다. 또한 매주 새롭게 올라오는 회차에 대한 라이브톡을 진행하여 독자 모두가 모여 이야기하며 작품에 대한 감상을 나눌 수 있습니다.```
+저희 서비스는 사용자가 본 웹툰/웹소설에 대해 별점 및 리뷰를 남기고 컬렉션을 만들어 공유할 수 있습니다.
+또한 매주 새롭게 올라오는 회차에 대한 라이브톡을 진행하여 독자 모두가 모여 이야기하며 작품에 대한 감상을 나눌 수 있습니다.
 
 ## 📌 프로젝트 목표
+모놀리식 프로젝트를 구현해보고 MSA로 전화하는 프로젝트를 진행함
 
-```sh
-어떤 어떤 기술을 활용해 어떤 걸 구현하려 했다
-```
 
 ## 프로젝트 설계
+
+소프트웨어 아키텍처  
+<div align="center">
+  <img src="/image/11.jpeg"  style="zoom:76%;" align="center"/>
+</div>
 시스템 아키텍처
+<div align="center">
+  <img src="/image/22.jpeg"  style="zoom:76%;" align="center"/>
+</div>
 
 
 ## 🔍 요구사항 명세서
@@ -36,23 +40,20 @@
 
 
 ## 기능 명세서
-swagger-ui
+[swagger-ui 주소](http://localhost:8080/swagger-ui/#/)
+[API notion 주소](https://ingjeon.notion.site/API-791b8ad810b6484d9947dfc777154176?pvs=4)
 
 
 
+## 프로젝트 시작 설정
+```agsl
+pom.xml 환경변수 설정
+	Run/Debug Configurations 에 User environment variables 에 등록
 
-## 테스트 및 결과
-
-<details>
-<summary>회원 정보 조회</summary>
-<div>
-<figure align="center"> 
-  <img src="z"/>
-    <p>~~~ 조회</p>
- </figure>
-</div>
-</details>
-
+querydsl 설정
+	Lifecycle compile 더블클릭
+	프로젝트우클릭 Open module settings target/java source
+```
 
 
 ## 🤼‍♂️팀원
