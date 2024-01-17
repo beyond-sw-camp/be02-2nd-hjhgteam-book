@@ -1,76 +1,17 @@
-
-
-imp:
-  imp_key: ${IMP_KEY}
-  imp_secret: ${IMP_SECRET}
-
-
-jwt:
-  secret-key: ${JWT}
-  token:
-    expired-time-ms: 1800000
-
-eureka:
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: http://${EUREKA_SERVER}/eureka
-
 spring:
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
-  kafka:
-    consumer:
-      bootstrap-servers: ${KAFKA_SERVER}
-    producer:
-      bootstrap-servers: ${KAFKA_SERVER}
-  mail:
-    host: ${EMAIL_HOST}
-    port: ${EMAIL_PORT}
-    username: ${EMAIL_ID}
-    password: ${EMAIL_PW}
-    properties:
-      mail:
-        smtp:
-          starttls:
-            enable: true
-            required: true
-          auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
   datasource:
-    url: jdbc:${DB_TYPE}://${DB_ADDR}:${DB_PORT}/${DB_NAME}
-    username: ${DB_USER}
-    password: ${DB_PW}
-    driver-class-name: ${DB_DRIVER}
+    url: jdbc:mysql://10.10.10.50/shop
+    username: ljh
+    password: qwer1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
-    database: ${DB_TYPE}
+    database: mysql
     hibernate:
       ddl-auto: update
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         format_sql: true
     show-sql: true
-
-logging:
-  level:
-    org.springframework.security: DEBUG
-
-cloud:
-  aws:
-    s3:
-      bucket: ${BUCKET}
-    credentials:
-      access-key: ${ACCESS_KEY}
-      secret-key: ${SECRET_KEY}
-    region:
-      static: ap-northeast-2
-      auto: false
-    stack:
-      auto: false
+server:
+  port: 8080
