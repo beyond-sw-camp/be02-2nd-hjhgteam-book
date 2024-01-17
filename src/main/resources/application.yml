@@ -10,10 +10,22 @@ jwt:
   token:
     expired-time-ms: 1800000
 
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${EUREKA_SERVER}/eureka
+
 spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  kafka:
+    consumer:
+      bootstrap-servers: ${KAFKA_SERVER}
+    producer:
+      bootstrap-servers: ${KAFKA_SERVER}
   mail:
     host: ${EMAIL_HOST}
     port: ${EMAIL_PORT}
