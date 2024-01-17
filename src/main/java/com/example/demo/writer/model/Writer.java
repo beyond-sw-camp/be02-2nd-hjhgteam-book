@@ -1,4 +1,4 @@
-package com.example.demo.category.model;
+package com.example.demo.writer.model;
 
 import com.example.demo.content.model.Content;
 import lombok.*;
@@ -8,23 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "CATEGORY")
-public class Category {
+@Builder
+@Table(name = "WRITER")
+public class Writer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 20)
+    @NonNull
     private String name;
 
-
-    @OneToMany(mappedBy = "categoryId", orphanRemoval = true)
-    @ToString.Exclude
+    @OneToMany(mappedBy = "writerId", orphanRemoval = true)
+//    @JsonManagedReference
     private List<Content> contentList = new ArrayList<>();
+
+
 
 }

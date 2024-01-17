@@ -1,7 +1,9 @@
 package com.example.demo.content.model;
 
+import com.example.demo.category.model.Category;
 import com.example.demo.comment.model.Comment;
 import com.example.demo.livetalk.model.Livetalk;
+import com.example.demo.writer.model.Writer;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
@@ -24,16 +26,27 @@ public class Content {
     @Column(length = 20)
     private String name;
 
-    private byte classify;
+    //Boolean으로 수정
+    private Boolean classify;
 
     @OneToMany(mappedBy = "content")
     @JsonManagedReference
     private List<Livetalk> livetalkList = new ArrayList<>();
 
 
-
     @OneToMany(mappedBy = "content")
     @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "Category_id")
+    private Category categoryId;
+
+    @ManyToOne
+    @JoinColumn(name = "Writer_id")
+    private Writer writerId;
+
+    @OneToOne(mappedBy = "content", fetch = FetchType.EAGER)
+    private ContentImage contentImages;
 
 }
