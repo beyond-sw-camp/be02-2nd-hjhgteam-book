@@ -17,8 +17,8 @@ public class CategoryController {
 
     @ApiOperation(value = "카테고리 추가", notes = "관리자 권한을 가진 관리자가 카테고리를 추가한다.")
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public ResponseEntity create(@RequestBody CategoryCreateReq categoryCreateReq) {
-        categoryService.create(categoryCreateReq);
+    public ResponseEntity create(String name) {
+        categoryService.create(name);
 
         return ResponseEntity.ok().body("생성");
     }

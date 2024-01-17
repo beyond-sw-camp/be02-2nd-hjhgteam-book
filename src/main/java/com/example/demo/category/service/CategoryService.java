@@ -25,9 +25,9 @@ public class CategoryService {
     private final ContentRepository contentRepository;
 
     // 추가
-    public void create(CategoryCreateReq categoryCreateReq) {
+    public void create(String name) {
         categoryRepository.save(Category.builder()
-                .name(categoryCreateReq.getName())
+                .name(name)
                 .build());
     }
 
