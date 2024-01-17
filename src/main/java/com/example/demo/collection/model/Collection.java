@@ -1,16 +1,14 @@
 package com.example.demo.collection.model;
 
+import com.example.demo.content.model.Content;
 import com.example.demo.member.model.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.Instant;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Date;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Builder
@@ -41,6 +39,7 @@ public class Collection {
         this.updatedAt = Timestamp.from(Instant.now());
     }
 
+
     @PreUpdate
     void updatedAt() {
         this.updatedAt = Timestamp.from(Instant.now());
@@ -49,9 +48,13 @@ public class Collection {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Member_id")
+    @JsonIgnore
     private Member member;
 
-//    @OneToMany(mappedBy = "collection", fetch = FetchType.LAZY)
-//    private List<ManageContent> manageContentList = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Content_id")
+    @JsonIgnore
+    private Content contentInCollect;
 
 }
