@@ -36,7 +36,7 @@
 
 ## 🔍 요구사항 명세서
 
-요구 사항 정의서는 etc 폴더에 docx 참고
+[요구 사항 정의서](https://github.com/beyond-sw-camp/be02-2nd-hjhgteam-book/blob/master/etc/DB%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EC%82%B0%EC%B6%9C%EB%AC%BC.docx)
 
 
 ## 기능 명세서
