@@ -10,8 +10,10 @@ import com.siot.IamportRestClient.response.Payment;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,19 +35,24 @@ public class MemberController {
     public ResponseEntity signup(MemberSignupReq memberSignupReq) {
         Boolean result = service.signup(memberSignupReq);
         if (result) {
-            service.sendEmail(memberSignupReq);
+            service.createEmailCert(memberSignupReq);
+//            service.sendEmail(memberSignupReq);
             return ResponseEntity.ok().body("ok");
         }
         return ResponseEntity.ok().body("fail");
     }
 
+    @KafkaListener(topics = "emailverified", groupId = "emailverified-group-00")
+    void createEmailCert(ConsumerRecord<String, String> record) {
+        service.updateStatus(record.value());
+    }
+
     @ApiOperation(value = "이메일 인증")
     @RequestMapping(method = RequestMethod.GET, value = "/verify")
     public ResponseEntity verifyEmail(EmailAuthenticationReq emailAuthenticaitonReq) {
-        if (emailAuthenticationService.verifyEmail(emailAuthenticaitonReq)) {
-            service.updateStatus(emailAuthenticaitonReq.getEmail());
-            return ResponseEntity.ok().body("ok");
-        }
+
+        service.emailCert(emailAuthenticaitonReq);
+
         return ResponseEntity.ok().body("fail");
     }
     @ApiOperation(value = "로그인")
