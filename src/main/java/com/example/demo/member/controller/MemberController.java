@@ -36,25 +36,26 @@ public class MemberController {
         Boolean result = service.signup(memberSignupReq);
         if (result) {
             service.createEmailCert(memberSignupReq);
-//            service.sendEmail(memberSignupReq);
+            service.sendEmail(memberSignupReq);
             return ResponseEntity.ok().body("ok");
         }
         return ResponseEntity.ok().body("fail");
     }
 
-    @KafkaListener(topics = "emailverified", groupId = "emailverified-group-00")
-    void createEmailCert(ConsumerRecord<String, String> record) {
-        service.updateStatus(record.value());
-    }
+//    @KafkaListener(topics = "emailverified", groupId = "emailverified-group-00")
+//    void createEmailCert(ConsumerRecord<String, String> record) {
+//        service.updateStatus(record.value());
+//    }
 
     @ApiOperation(value = "이메일 인증")
     @RequestMapping(method = RequestMethod.GET, value = "/verify")
     public ResponseEntity verifyEmail(EmailAuthenticationReq emailAuthenticaitonReq) {
-
-        service.emailCert(emailAuthenticaitonReq);
-
-        return ResponseEntity.ok().body("fail");
+        if (service.emailCert(emailAuthenticaitonReq)) {
+            service.updateStatus(emailAuthenticaitonReq.getEmail());
+        }
+        return ResponseEntity.ok().body(service.emailCert(emailAuthenticaitonReq));
     }
+
     @ApiOperation(value = "로그인")
     @RequestMapping(method = RequestMethod.POST, value = "/login")
     public ResponseEntity login(MemberLoginReq memberLoginReq) {

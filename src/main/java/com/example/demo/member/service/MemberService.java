@@ -48,7 +48,7 @@ public class MemberService {
     private final AmazonS3 s3;
     private final IamportClient iamportClient;
     private final MembershipRepository membershipRepository;
-    private final KafkaTemplate kafkaTemplate;
+//    private final KafkaTemplate kafkaTemplate;
 
 
     @Value("${jwt.secret-key}")
@@ -65,17 +65,21 @@ public class MemberService {
         EmailCreate emailCreate = EmailCreate.builder()
                 .email(memberSignupReq.getEmail())
                 .jwt(jwt).build();
-        ProducerRecord<String, String> record =
-                new ProducerRecord<>("emailcert","email", emailCreate.getEmail());
-        kafkaTemplate.send(record);
+//        ProducerRecord<String, String> record =
+//                new ProducerRecord<>("emailcert","email", emailCreate.getEmail());
+//        kafkaTemplate.send(record);
     }
 
-    public void emailCert(EmailAuthenticationReq emailAuthenticationReq) {
-        ProducerRecord<String,String> record =
-                new ProducerRecord<>("emailverify","authentication",
-                        emailAuthenticationReq.toString());
+//    public void emailCert(EmailAuthenticationReq emailAuthenticationReq) {
+//        ProducerRecord<String,String> record =
+//                new ProducerRecord<>("emailverify","authentication",
+//                        emailAuthenticationReq.toString());
+//
+//        kafkaTemplate.send(record);
+//    }
 
-        kafkaTemplate.send(record);
+    public Boolean emailCert(EmailAuthenticationReq emailAuthenticationReq) {
+        return emailAuthenticationService.verifyEmail(emailAuthenticationReq);
     }
 
     public Boolean signup(MemberSignupReq memberSignupReq) {
@@ -93,24 +97,24 @@ public class MemberService {
         return false;
     }
 
-//    public void sendEmail(MemberSignupReq memberSignupReq) {
-//        SimpleMailMessage message = new SimpleMailMessage();
-//        message.setTo(memberSignupReq.getEmail());
-//        message.setSubject("[BOOKSPEDIA] 이메일 인증");
-//        String uuid = UUID.randomUUID().toString();
-//        String jwt = JwtUtils.generateSignUpAccessToken(memberSignupReq.getEmail(), secretKey, expiredTimeMs);
-//        message.setText("http://localhost:8080/member/verify?email="
-//                +memberSignupReq.getEmail()
-//                +"&uuid="+uuid
-//                +"&jwt="+jwt
-//        );
-//        emailSender.send(message);
-//
-//        emailAuthenticationService.createEmailVerify(EmailAuthenticationReq.builder()
-//                .email(memberSignupReq.getEmail())
-//                .uuid(uuid)
-//                .jwt(jwt).build());
-//    }
+    public void sendEmail(MemberSignupReq memberSignupReq) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(memberSignupReq.getEmail());
+        message.setSubject("[BOOKSPEDIA] 이메일 인증");
+        String uuid = UUID.randomUUID().toString();
+        String jwt = JwtUtils.generateSignUpAccessToken(memberSignupReq.getEmail(), secretKey, expiredTimeMs);
+        message.setText("http://localhost:8080/member/verify?email="
+                +memberSignupReq.getEmail()
+                +"&uuid="+uuid
+                +"&jwt="+jwt
+        );
+        emailSender.send(message);
+
+        emailAuthenticationService.createEmailVerify(EmailAuthenticationReq.builder()
+                .email(memberSignupReq.getEmail())
+                .uuid(uuid)
+                .jwt(jwt).build());
+    }
 
     public String login(MemberLoginReq memberLoginReq) {
         Optional<Member> result = repository.findByEmail(memberLoginReq.getEmail());

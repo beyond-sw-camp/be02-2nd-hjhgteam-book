@@ -1,4 +1,6 @@
 
+server:
+  port: ${SEVER_PORT}
 
 imp:
   imp_key: ${IMP_KEY}
@@ -6,16 +8,16 @@ imp:
 
 
 jwt:
-  secret-key: ${JWT}
+  secret-key: ${JWT_SECRET_KEY}
   token:
-    expired-time-ms: 1800000
+    expired-time-ms: ${JWT_EXPIRED_TIME}
 
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://${EUREKA_SERVER}/eureka
+      defaultZone: ${EUREKA_SERVER}
 
 spring:
   mvc:
@@ -65,12 +67,12 @@ logging:
 cloud:
   aws:
     s3:
-      bucket: ${BUCKET}
+      bucket: ${AWS_BUCKET}
     credentials:
-      access-key: ${ACCESS_KEY}
-      secret-key: ${SECRET_KEY}
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
     region:
-      static: ap-northeast-2
+      static: ${AWS_REGION}
       auto: false
     stack:
       auto: false
