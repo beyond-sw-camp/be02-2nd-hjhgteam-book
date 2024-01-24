@@ -3,6 +3,7 @@ package com.example.demo.content.service;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.demo.category.model.Category;
+import com.example.demo.category.model.dto.CategoryContentCreateReq;
 import com.example.demo.content.model.Content;
 import com.example.demo.content.model.ContentImage;
 import com.example.demo.content.model.dto.*;
@@ -43,20 +44,26 @@ public class ContentService {
     @Transactional
     public ContentCreateRes create(ContentCreateReq contentCreateReq,
                                    MultipartFile uploadFiles) {
+        Category categoryId = null;
+        Writer writerId = null;
+        if (contentCreateReq.getCategory_id() != null)
+            categoryId = Category.builder().id(contentCreateReq.getCategory_id().getId()).build();
+        if (contentCreateReq.getWriter_id() != null)
+            writerId = Writer.builder().id(contentCreateReq.getWriter_id().getId()).build();
 
         Content content = contentRepository.save(Content.builder()
-                .categoryId(contentCreateReq.getCategory_id())
-                .writerId(contentCreateReq.getWriter_id())
+                .categoryId(categoryId)
+                .writerId(writerId)
                 .name(contentCreateReq.getName())
                 .classify(contentCreateReq.getClassify())
                 .build());
 
-            String uploadPath = uplopadFile(uploadFiles);
+        String uploadPath = uplopadFile(uploadFiles);
 
-            ContentImage contentImage = contentImageRepository.save(ContentImage.builder()
-                    .content(content)
-                    .filename(uploadPath)
-                    .build());
+        ContentImage contentImage = contentImageRepository.save(ContentImage.builder()
+                .content(content)
+                .filename(uploadPath)
+                .build());
 
 
         ContentCreateRes response = ContentCreateRes.builder()
@@ -69,8 +76,8 @@ public class ContentService {
     }
 
     // 작품 전체 리스트 보기 완료
-    public List<ContentReadRes> list(Integer page, Integer size){
-        Pageable pageable = PageRequest.of(page-1,size);
+    public List<ContentReadRes> list(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
         Page<Content> result = contentRepository.findList(pageable);
 
         List<ContentReadRes> contentReadResList = new ArrayList<>();
@@ -105,7 +112,7 @@ public class ContentService {
 
             ContentImage contentImage = content.getContentImages();
 
-                String filename = contentImage.getFilename();
+            String filename = contentImage.getFilename();
 
             ContentReadRes contentReadRes = ContentReadRes.builder()
                     .id(content.getId())
@@ -158,8 +165,8 @@ public class ContentService {
             contentRepository.save(content);
 
 
-            Optional<ContentImage> image  = contentImageRepository.findByContent_Id(id);
-            if(image.isPresent()){
+            Optional<ContentImage> image = contentImageRepository.findByContent_Id(id);
+            if (image.isPresent()) {
                 ContentImage contentImage = image.get();
                 contentImage.setContent(null);
 
@@ -171,8 +178,6 @@ public class ContentService {
         }
 
     }
-
-
 
 
     // 작품 이미지 파일 업로드
@@ -212,7 +217,6 @@ public class ContentService {
 
         return s3.getUrl(bucket, saveFileName.replace(File.separator, "/")).toString();
     }
-
 
 
 }

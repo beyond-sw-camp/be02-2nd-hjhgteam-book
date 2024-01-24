@@ -23,8 +23,9 @@ public class ContentController {
 
     @ApiOperation(value = "작품 추가", notes = "관리자 권한을 가진 관리자가 작품을 추가한다.")
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public ResponseEntity create(ContentCreateReq contentCreateReq,
-                                  MultipartFile uploadFiles) {
+    public ResponseEntity create(
+             ContentCreateReq contentCreateReq,
+            @RequestPart MultipartFile uploadFiles) {
         ContentCreateRes response = contentService.create(contentCreateReq, uploadFiles);
 
         return ResponseEntity.ok().body(response);
@@ -47,8 +48,8 @@ public class ContentController {
 
     @ApiOperation(value = "작품 수정", notes = "관리자 권한을 가진 관리자가 작품을 수정한다.")
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity update( ContentUpdateReq contentUpdateReq,
-                                  MultipartFile uploadFiles) {
+    public ResponseEntity update(ContentUpdateReq contentUpdateReq,
+                                 MultipartFile uploadFiles) {
         contentService.update(contentUpdateReq, uploadFiles);
 
         return ResponseEntity.ok().body("수정");
