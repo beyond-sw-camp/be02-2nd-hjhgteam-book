@@ -29,7 +29,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(apiInfo("스프링 프로젝트", "v1.0"));
+                .apiInfo(apiInfo("스프링 프로젝트 - BOOK", "v1.0"));
     }
 
     private SecurityScheme apiKey() {
@@ -52,7 +52,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo(String title, String version) {
         return new ApiInfo(
                 title,
-                "BOOK",
+                "회원 API를 제외한 API들은 회원 API의 로그인 기능으로 토큰을 발급 받은 후 swagger 우측 상단의 Authorize 에 'Bearer ' + '발급받은 토큰'을 적어서 인가를 받고 사용하면 됨",
                 version,
                 "http://www.alittlevanilla.kro.kr/",
                 new Contact("블로그 주소", "https://blog.naver.com/ghdalswl77", "ghdalswl77@naver.com"),
