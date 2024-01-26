@@ -40,7 +40,7 @@
 
 
 ## 기능 명세서
-[swagger-ui 주소](http://localhost:8080/swagger-ui/#/)
+[swagger-ui 주소](http://3.34.199.45:8080/swagger-ui/#)
 <br>
 [API notion 주소](https://ingjeon.notion.site/API-791b8ad810b6484d9947dfc777154176?pvs=4)
 
