@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 @RequestMapping("/member")
 @Api(value = "회원 컨트롤러", tags = "회원 API")
+@CrossOrigin("*")
 public class MemberController {
     private final MemberService service;
     private final EmailAuthenticationService emailAuthenticationService;

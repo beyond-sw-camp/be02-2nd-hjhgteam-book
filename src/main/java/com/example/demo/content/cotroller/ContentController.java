@@ -8,7 +8,10 @@ import com.example.demo.content.model.dto.ContentUpdateReq;
 import com.example.demo.content.service.ContentService;
 import com.example.demo.writer.model.Writer;
 import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,15 +20,19 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/content")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ContentController {
 
     private final ContentService contentService;
 
     @ApiOperation(value = "작품 추가", notes = "관리자 권한을 가진 관리자가 작품을 추가한다.")
-    @RequestMapping(method = RequestMethod.POST, value = "/create")
+    @PostMapping(value = "/create",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity create(
-             ContentCreateReq contentCreateReq,
-            @RequestPart MultipartFile uploadFiles) {
+//            @RequestPart ContentCreateReq contentCreateReq,
+            ContentCreateReq contentCreateReq,
+            @RequestPart MultipartFile uploadFiles
+    ) {
         ContentCreateRes response = contentService.create(contentCreateReq, uploadFiles);
 
         return ResponseEntity.ok().body(response);

@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import okhttp3.Cache;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @Getter
@@ -18,11 +19,9 @@ public class ContentCreateReq {
     @ApiParam(value = "작품 이름", required = true, example = "")
     private String name;
 
-    @ApiParam(value = "작품 구분", required = true, example = "0:웹툰, 1:웹소설")
+    @ApiParam(value = "작품 구분 // 0:웹툰, 1:웹소설", required = true, example = "0:웹툰, 1:웹소설")
     private Boolean classify;
 
     private WriterContentCreateReq writer_id;
     private CategoryContentCreateReq category_id;
-
-
 }

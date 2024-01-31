@@ -42,8 +42,10 @@ public class ContentService {
 
     // 작품 추가
     @Transactional
-    public ContentCreateRes create(ContentCreateReq contentCreateReq,
-                                   MultipartFile uploadFiles) {
+    public ContentCreateRes create(
+            ContentCreateReq contentCreateReq
+            ,MultipartFile uploadFiles
+    ) {
         Category categoryId = null;
         Writer writerId = null;
         if (contentCreateReq.getCategory_id() != null)
@@ -58,18 +60,26 @@ public class ContentService {
                 .classify(contentCreateReq.getClassify())
                 .build());
 
-        String uploadPath = uplopadFile(uploadFiles);
 
-        ContentImage contentImage = contentImageRepository.save(ContentImage.builder()
-                .content(content)
-                .filename(uploadPath)
-                .build());
 
+        if (!uploadFiles.getOriginalFilename().equals("")) {
+            System.out.println(uploadFiles.getOriginalFilename());
+            String uploadPath = uplopadFile(uploadFiles);
+            ContentImage contentImage = contentImageRepository.save(ContentImage.builder()
+                    .content(content)
+                    .filename(uploadPath)
+                    .build());
+            ContentCreateRes response = ContentCreateRes.builder()
+                    .classify(content.getClassify())
+                    .name(content.getName())
+                    .filename(contentImage.getFilename())
+                    .build();
+            return response;
+        }
 
         ContentCreateRes response = ContentCreateRes.builder()
                 .classify(content.getClassify())
                 .name(content.getName())
-                .filename(contentImage.getFilename())
                 .build();
 
         return response;
@@ -201,7 +211,6 @@ public class ContentService {
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
-
 
             s3.putObject(bucket, saveFileName.replace(File.separator, "/"), input, metadata);
 
