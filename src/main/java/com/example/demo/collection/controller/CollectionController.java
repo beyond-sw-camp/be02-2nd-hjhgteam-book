@@ -40,11 +40,11 @@ public class CollectionController {
         return ResponseEntity.ok().body(collectionService.list());
     }
 
-    @ApiOperation(value = "컬렉션 상세 조회", notes = "컬렌션 title로 컬렉션을 조회한다.")
-    @GetMapping("/detail/{title}")
-    public ResponseEntity getCollection(@PathVariable String title) {
-        return ResponseEntity.ok().body(collectionService.read(title));
-    }
+//    @ApiOperation(value = "컬렉션 상세 조회", notes = "컬렌션 title로 컬렉션을 조회한다.")
+//    @GetMapping("/detail/{title}")
+//    public ResponseEntity getCollection(@PathVariable String title) {
+//        return ResponseEntity.ok().body(collectionService.read(title));
+//    }
 
     //todo 검색
 //    @ApiOperation(value = "컬렉션 검색", notes = "컬렌션에서 작품, 유저등으로 컬렉션을 검색한다.")

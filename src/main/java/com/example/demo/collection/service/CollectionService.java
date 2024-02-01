@@ -1,5 +1,7 @@
 package com.example.demo.collection.service;
 
+import com.example.demo.category.model.Category;
+import com.example.demo.category.repository.CategoryRepository;
 import com.example.demo.collection.model.Collection;
 import com.example.demo.collection.model.dto.CollectionCreateReq;
 import com.example.demo.collection.model.dto.CollectionListRes;
@@ -7,8 +9,11 @@ import com.example.demo.collection.model.dto.CollectionReadRes;
 import com.example.demo.collection.model.dto.CollectionUpdateReq;
 import com.example.demo.collection.repository.CollectionRepository;
 import com.example.demo.content.model.Content;
+import com.example.demo.content.repository.ContentRepository;
 import com.example.demo.member.model.Member;
 import com.example.demo.member.repository.MemberRepository;
+import com.example.demo.writer.model.Writer;
+import com.example.demo.writer.repository.WriterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +28,9 @@ public class CollectionService {
     private final CollectionRepository collectionRepository;
 
     private final MemberRepository memberRepository;
+    private final ContentRepository contentRepository;
+    private final CategoryRepository categoryRepository;
+    private final WriterRepository writerRepository;
 
 
     //todo 컬렉션에 있는 컨텍트면 추가 X
@@ -37,58 +45,45 @@ public class CollectionService {
                 .build());
     }
 
-
-    public CollectionListRes list() {
+    public List<CollectionReadRes> list(){
         List<CollectionReadRes> collectionReadResList = new ArrayList<>();
         List<Collection> result = collectionRepository.findAll();
 
-
-
-        for (Collection collection : result) {
-            String titleTemp = collection.getCollectionTitle();
-            List<Content> contents = new ArrayList<>();
-            // 컬렉션 의 이름 과 일치하는 content 리스트 생성하고
-            // 중복 방지로 해당 객체 삭제
-            for (Collection c : result) {
-                if (c.getCollectionTitle().equals(titleTemp)){
-                    contents.add(c.getContentInCollect());
-                    //todo 여기도 read랑 마찬가지 remove 쓰면안됨
-//                    result.remove(c);
-                    }
-            }
-
+        for(Collection collection: result){
             CollectionReadRes collectionReadRes = CollectionReadRes.builder()
+                    .id(collection.getId())
                     .collectionTitle(collection.getCollectionTitle())
-                    .contentList(contents)
+                    .contentId(collection.getContentInCollect().getId())
+                    .contentName(collection.getContentInCollect().getName())
+//                    .contentClassify(collection.getContentInCollect().getClassify())
+//                    .categoryId(collection.getContentInCollect().getCategoryId().getId())
+//                    .writerId(collection.getContentInCollect().getWriterId().getId())
+                    .contentImage(collection.getContentInCollect().getContentImages().getFilename())
                     .build();
             collectionReadResList.add(collectionReadRes);
         }
-
-
-        return CollectionListRes.builder()
-                .resultList(collectionReadResList)
-                .build();
+        return collectionReadResList;
     }
 
 
-    public CollectionReadRes read(String title) {
-//        Optional<Collection> result = collectionRepository.findAllById(id);
-        List<Collection> result = collectionRepository.findAllByCollectionTitle(title);
-        List<Content> contents = new ArrayList<>();
-
-        for (Collection c : result) {
-            contents.add(c.getContentInCollect());
-            //todo 중복 문제 해결해야함 이렇게는 안됨
-//            result.remove(c);
-        }
-
-        CollectionReadRes collectionReadRes = CollectionReadRes.builder()
-                .collectionTitle(title)
-                .contentList(contents)
-                .build();
-        return collectionReadRes;
-
-    }
+//    public CollectionReadRes read(String title) {
+////        Optional<Collection> result = collectionRepository.findAllById(id);
+//        List<Collection> result = collectionRepository.findAllByCollectionTitle(title);
+//        List<Content> contents = new ArrayList<>();
+//
+//        for (Collection c : result) {
+//            contents.add(c.getContentInCollect());
+//            //todo 중복 문제 해결해야함 이렇게는 안됨
+////            result.remove(c);
+//        }
+//
+//        CollectionReadRes collectionReadRes = CollectionReadRes.builder()
+//                .collectionTitle(title)
+//                .contentList(contents)
+//                .build();
+//        return collectionReadRes;
+//
+//    }
 
     //todo 검색 그냥 안됨
     @Transactional
