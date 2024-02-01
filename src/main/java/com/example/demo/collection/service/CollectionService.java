@@ -28,10 +28,6 @@ public class CollectionService {
     private final CollectionRepository collectionRepository;
 
     private final MemberRepository memberRepository;
-    private final ContentRepository contentRepository;
-    private final CategoryRepository categoryRepository;
-    private final WriterRepository writerRepository;
-
 
     //todo 컬렉션에 있는 컨텍트면 추가 X
     public void create(Member member, CollectionCreateReq collectionCreateReq) {

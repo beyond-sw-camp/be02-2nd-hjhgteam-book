@@ -40,7 +40,6 @@ public class ContentService {
     private final ContentImageRepository contentImageRepository;
     private final CategoryRepository categoryRepository;
     private final WriterRepository writerRepository;
-//    private final AmazonS3 s3;
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")

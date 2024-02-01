@@ -46,7 +46,6 @@ public class MemberService {
     private final AuthenticationManager authenticationManager;
     private final JavaMailSender emailSender;
     private final EmailAuthenticationService emailAuthenticationService;
-//    private final AmazonS3 s3;
     private final AmazonS3Client amazonS3Client;
     private final IamportClient iamportClient;
     private final MembershipRepository membershipRepository;
@@ -105,8 +104,8 @@ public class MemberService {
         message.setSubject("[BOOKSPEDIA] 이메일 인증");
         String uuid = UUID.randomUUID().toString();
         String jwt = JwtUtils.generateSignUpAccessToken(memberSignupReq.getEmail(), secretKey, expiredTimeMs);
-        message.setText("http://localhost:8080/member/verify?email="
-                +memberSignupReq.getEmail()
+        message.setText("http://3.34.199.45:8080/member/verify" +
+                "?email="+memberSignupReq.getEmail()
                 +"&uuid="+uuid
                 +"&jwt="+jwt
         );

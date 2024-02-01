@@ -9,7 +9,19 @@ import java.util.List;
 @Builder
 @Data
 public class CollectionReadRes {
-//    Long idx;
+    Long id;
     String collectionTitle;
-    List<Content> contentList;
+//    List<Content> contentList;
+
+    Long contentId; // 작품id
+    String contentName; // 작품 이름
+    //    Boolean contentClassify; // 작품 구분(0:웹툰 / 1:웹소설)
+//    Long categoryId;
+//    String writerId;
+    String contentImage;
+
+
+
+
+
 }
