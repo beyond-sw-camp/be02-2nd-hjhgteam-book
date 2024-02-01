@@ -1,6 +1,7 @@
 package com.example.demo.member.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.demo.member.model.Member;
 import com.example.demo.member.model.Membership;
@@ -45,7 +46,8 @@ public class MemberService {
     private final AuthenticationManager authenticationManager;
     private final JavaMailSender emailSender;
     private final EmailAuthenticationService emailAuthenticationService;
-    private final AmazonS3 s3;
+//    private final AmazonS3 s3;
+    private final AmazonS3Client amazonS3Client;
     private final IamportClient iamportClient;
     private final MembershipRepository membershipRepository;
 //    private final KafkaTemplate kafkaTemplate;
@@ -188,12 +190,12 @@ public class MemberService {
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
 
-            s3.putObject(bucket, saveFileName.replace(File.separator, "/"), file.getInputStream(), metadata);
+            amazonS3Client.putObject(bucket, saveFileName.replace(File.separator, "/"), file.getInputStream(), metadata);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return s3.getUrl(bucket, saveFileName.replace(File.separator, "/")).toString();
+        return amazonS3Client.getUrl(bucket, saveFileName.replace(File.separator, "/")).toString();
     }
 
     public void createMembership(MembershipReq membershipReq) {

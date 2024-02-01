@@ -58,5 +58,4 @@ public class Content {
     @JsonIgnore
     @ToString.Exclude
     private List<Collection> collectionList = new ArrayList<>();
-
 }

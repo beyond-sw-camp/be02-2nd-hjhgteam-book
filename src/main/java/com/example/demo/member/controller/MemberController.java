@@ -63,7 +63,11 @@ public class MemberController {
         MemberLoginRes response = MemberLoginRes.builder()
                 .token(service.login(memberLoginReq))
                 .build();
-        return ResponseEntity.ok().body(response);
+        if (response.getToken() != null) {
+            return ResponseEntity.ok().body(response);
+        } else {
+            return ResponseEntity.ok().body("로그인 실패");
+        }
     }
     @ApiOperation(value = "회원 정보 수정")
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")

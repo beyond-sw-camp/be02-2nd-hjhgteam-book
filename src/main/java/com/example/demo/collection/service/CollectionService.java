@@ -43,18 +43,17 @@ public class CollectionService {
         List<Collection> result = collectionRepository.findAll();
 
 
-
         for (Collection collection : result) {
             String titleTemp = collection.getCollectionTitle();
             List<Content> contents = new ArrayList<>();
             // 컬렉션 의 이름 과 일치하는 content 리스트 생성하고
             // 중복 방지로 해당 객체 삭제
             for (Collection c : result) {
-                if (c.getCollectionTitle().equals(titleTemp)){
+                if (c.getCollectionTitle().equals(titleTemp)) {
                     contents.add(c.getContentInCollect());
                     //todo 여기도 read랑 마찬가지 remove 쓰면안됨
 //                    result.remove(c);
-                    }
+                }
             }
 
             CollectionReadRes collectionReadRes = CollectionReadRes.builder()
@@ -94,8 +93,8 @@ public class CollectionService {
     @Transactional
     public List<Collection> search(String keyword) {
         List<Collection> postsList = collectionRepository.findByCollectionTitleContaining(keyword);
-        return postsList;}
-
+        return postsList;
+    }
 
 
     // todo id 이름 같은 컬렉션 전부 수정
@@ -109,7 +108,7 @@ public class CollectionService {
 
             Collection collection = result.get();
             for (Collection c : updateName) {
-                if (c.getCollectionTitle().equals(collection.getCollectionTitle())){
+                if (c.getCollectionTitle().equals(collection.getCollectionTitle())) {
                     c.setCollectionTitle(collectionUpdateReq.getCollectionTitle());
                 }
             }
@@ -130,8 +129,6 @@ public class CollectionService {
         }
         collectionRepository.deleteById(idx);
     }
-
-
 
 
     public void deleteAll(String title) {
