@@ -33,7 +33,7 @@ public class MemberController {
 
     @ApiOperation(value = "회원가입")
     @RequestMapping(method = RequestMethod.POST, value = "/signup")
-    public ResponseEntity signup(MemberSignupReq memberSignupReq) {
+    public ResponseEntity signup(@RequestBody MemberSignupReq memberSignupReq) {
         Boolean result = service.signup(memberSignupReq);
         if (result) {
             service.createEmailCert(memberSignupReq);
@@ -59,7 +59,7 @@ public class MemberController {
 
     @ApiOperation(value = "로그인")
     @RequestMapping(method = RequestMethod.POST, value = "/login")
-    public ResponseEntity login(MemberLoginReq memberLoginReq) {
+    public ResponseEntity login(@RequestBody MemberLoginReq memberLoginReq) {
         MemberLoginRes response = MemberLoginRes.builder()
                 .token(service.login(memberLoginReq))
                 .build();
@@ -72,7 +72,9 @@ public class MemberController {
         if (memberUpdateReq.getImageFile() != null)
             path = service.saveFile(memberUpdateReq.getImageFile());
 
-        service.update(memberUpdateReq, path);
+        if (path != null)
+            service.update(memberUpdateReq, path);
+
         return ResponseEntity.ok().body("ok");
     }
 

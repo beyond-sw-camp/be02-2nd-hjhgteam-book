@@ -22,6 +22,6 @@ public class ContentCreateReq {
     @ApiParam(value = "작품 구분 // 0:웹툰, 1:웹소설", required = true, example = "0:웹툰, 1:웹소설")
     private Boolean classify;
 
-    private WriterContentCreateReq writer_id;
-    private CategoryContentCreateReq category_id;
+    private Long writer_id;
+    private Long category_id;
 }

@@ -1,15 +1,18 @@
 package com.example.demo.content.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.example.demo.category.model.Category;
 import com.example.demo.category.model.dto.CategoryContentCreateReq;
+import com.example.demo.category.repository.CategoryRepository;
 import com.example.demo.content.model.Content;
 import com.example.demo.content.model.ContentImage;
 import com.example.demo.content.model.dto.*;
 import com.example.demo.content.repository.ContentImageRepository;
 import com.example.demo.content.repository.ContentRepository;
 import com.example.demo.writer.model.Writer;
+import com.example.demo.writer.repository.WriterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -35,7 +38,10 @@ public class ContentService {
 
     private final ContentRepository contentRepository;
     private final ContentImageRepository contentImageRepository;
+    private final CategoryRepository categoryRepository;
+    private final WriterRepository writerRepository;
     private final AmazonS3 s3;
+    private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -46,43 +52,100 @@ public class ContentService {
             ContentCreateReq contentCreateReq
             ,MultipartFile uploadFiles
     ) {
-        Category categoryId = null;
-        Writer writerId = null;
-        if (contentCreateReq.getCategory_id() != null)
-            categoryId = Category.builder().id(contentCreateReq.getCategory_id().getId()).build();
-        if (contentCreateReq.getWriter_id() != null)
-            writerId = Writer.builder().id(contentCreateReq.getWriter_id().getId()).build();
+//        Category category = null;
+//        Writer writer = null;
 
-        Content content = contentRepository.save(Content.builder()
-                .categoryId(categoryId)
-                .writerId(writerId)
-                .name(contentCreateReq.getName())
-                .classify(contentCreateReq.getClassify())
-                .build());
+//        if (contentCreateReq.getCategory_id() != null)
+//            Optional<Category> result = categoryRepository.findById(contentCreateReq.getCategory_id());
+//
+//        if (contentCreateReq.getWriter_id() != null)
+//            writerId = Writer.builder().id(contentCreateReq.getWriter_id()).build();
+        Optional<Category> categoryResult = categoryRepository.findById(contentCreateReq.getCategory_id());
+        Optional<Writer> writerResult = writerRepository.findById(contentCreateReq.getWriter_id());
 
-
-
-        if (!uploadFiles.getOriginalFilename().equals("")) {
-            System.out.println(uploadFiles.getOriginalFilename());
-            String uploadPath = uplopadFile(uploadFiles);
-            ContentImage contentImage = contentImageRepository.save(ContentImage.builder()
-                    .content(content)
-                    .filename(uploadPath)
+        if (categoryResult.isPresent() && writerResult.isPresent()) {
+            Content content = contentRepository.save(Content.builder()
+                    .categoryId(categoryResult.get())
+                    .writerId(writerResult.get())
+                    .name(contentCreateReq.getName())
+                    .classify(contentCreateReq.getClassify())
                     .build());
+
+            if (!uploadFiles.getOriginalFilename().equals("")) {
+                System.out.println(uploadFiles.getOriginalFilename());
+                String uploadPath = uplopadFile(uploadFiles);
+                ContentImage contentImage = contentImageRepository.save(ContentImage.builder()
+                        .content(content)
+                        .filename(uploadPath)
+                        .build());
+                ContentCreateRes response = ContentCreateRes.builder()
+                        .classify(content.getClassify())
+                        .name(content.getName())
+                        .filename(contentImage.getFilename())
+                        .build();
+                return response;
+            }
+
             ContentCreateRes response = ContentCreateRes.builder()
                     .classify(content.getClassify())
                     .name(content.getName())
-                    .filename(contentImage.getFilename())
                     .build();
+
+            return response;
+
+
+        } else {
+            Content content = contentRepository.save(Content.builder()
+                    .name(contentCreateReq.getName())
+                    .classify(contentCreateReq.getClassify())
+                    .build());
+
+            if (!uploadFiles.getOriginalFilename().equals("")) {
+                System.out.println(uploadFiles.getOriginalFilename());
+                String uploadPath = uplopadFile(uploadFiles);
+                ContentImage contentImage = contentImageRepository.save(ContentImage.builder()
+                        .content(content)
+                        .filename(uploadPath)
+                        .build());
+                ContentCreateRes response = ContentCreateRes.builder()
+                        .classify(content.getClassify())
+                        .name(content.getName())
+                        .filename(contentImage.getFilename())
+                        .build();
+                return response;
+            }
+
+            ContentCreateRes response = ContentCreateRes.builder()
+                    .classify(content.getClassify())
+                    .name(content.getName())
+                    .build();
+
             return response;
         }
 
-        ContentCreateRes response = ContentCreateRes.builder()
-                .classify(content.getClassify())
-                .name(content.getName())
-                .build();
 
-        return response;
+
+//        if (!uploadFiles.getOriginalFilename().equals("")) {
+//            System.out.println(uploadFiles.getOriginalFilename());
+//            String uploadPath = uplopadFile(uploadFiles);
+//            ContentImage contentImage = contentImageRepository.save(ContentImage.builder()
+//                    .content(content)
+//                    .filename(uploadPath)
+//                    .build());
+//            ContentCreateRes response = ContentCreateRes.builder()
+//                    .classify(content.getClassify())
+//                    .name(content.getName())
+//                    .filename(contentImage.getFilename())
+//                    .build();
+//            return response;
+//        }
+//
+//        ContentCreateRes response = ContentCreateRes.builder()
+//                .classify(content.getClassify())
+//                .name(content.getName())
+//                .build();
+
+
     }
 
     // 작품 전체 리스트 보기 완료
@@ -212,7 +275,7 @@ public class ContentService {
             metadata.setContentLength(file.getSize());
             metadata.setContentType(file.getContentType());
 
-            s3.putObject(bucket, saveFileName.replace(File.separator, "/"), input, metadata);
+            amazonS3Client.putObject(bucket, saveFileName.replace(File.separator, "/"), input, metadata);
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -224,7 +287,7 @@ public class ContentService {
             }
         }
 
-        return s3.getUrl(bucket, saveFileName.replace(File.separator, "/")).toString();
+        return amazonS3Client.getUrl(bucket, saveFileName.replace(File.separator, "/")).toString();
     }
 
 
