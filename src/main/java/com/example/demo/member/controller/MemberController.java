@@ -71,12 +71,13 @@ public class MemberController {
     }
     @ApiOperation(value = "회원 정보 수정")
     @RequestMapping(method = RequestMethod.PATCH, value = "/update")
-    public ResponseEntity update(MemberUpdateReq memberUpdateReq) {
+    public ResponseEntity update(
+            MemberUpdateReq memberUpdateReq,
+            @RequestPart MultipartFile imageFile) {
         String path = null;
-        if (memberUpdateReq.getImageFile() != null)
-            path = service.saveFile(memberUpdateReq.getImageFile());
+        if (imageFile != null)
+            path = service.saveFile(imageFile);
 
-        if (path != null)
             service.update(memberUpdateReq, path);
 
         return ResponseEntity.ok().body("ok");

@@ -11,10 +11,12 @@ import java.util.Date;
 
 public class JwtUtils {
 
-    public static String generateLoginAccessToken(String email, Long id, String key, int expiredTimeMs) {
+    public static String generateLoginAccessToken(Member member, String key, int expiredTimeMs) {
         Claims claims = Jwts.claims();
-        claims.put("username", email);
-        claims.put("id", id);
+        claims.put("username", member.getEmail());
+        claims.put("id", member.getId());
+        claims.put("nickname", member.getNickname());
+        claims.put("image", member.getImage());
 
 
         String token = Jwts.builder()

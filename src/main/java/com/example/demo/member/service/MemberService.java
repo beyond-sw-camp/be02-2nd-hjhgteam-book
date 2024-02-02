@@ -130,7 +130,7 @@ public class MemberService {
                 );
 
                 if (authentication.isAuthenticated()) {
-                    return JwtUtils.generateLoginAccessToken(memberLoginReq.getEmail(), member.getId(), secretKey, expiredTimeMs);
+                    return JwtUtils.generateLoginAccessToken(member, secretKey, expiredTimeMs);
                 }
             }
         }

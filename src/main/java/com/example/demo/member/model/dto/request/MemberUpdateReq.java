@@ -26,6 +26,6 @@ public class MemberUpdateReq {
 //    @Size(min = 10, max = 40)
     @ApiParam(value = "회원의 닉네임을 입력", example = "Qwer!12@34")
     private String nickname;
-    @ApiParam(value = "이미지 파일 업로드")
-    private MultipartFile imageFile;
+//    @ApiParam(value = "이미지 파일 업로드")
+//    private MultipartFile imageFile;
 }
