@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.Map;
 
 @Api(value = "작품 Controller", tags = "작품 API")
 @RestController
@@ -46,11 +47,19 @@ public class ContentController {
         return ResponseEntity.ok().body(contentService.list(page, size));
     }
 
-    @ApiOperation(value = "작품 검색", notes = "작품 id로 작품을 검색한다.")
+    @ApiOperation(value = "작품 id로 검색", notes = "작품 id로 작품을 검색한다.")
     @ApiParam(name = "작품 id", required = true, example = "")
     @GetMapping("/{id}")
     public ResponseEntity read(@PathVariable Long id) {
         return ResponseEntity.ok().body(contentService.read(id));
+    }
+
+    @ApiOperation(value = "작품 이름으로 검색", notes = "작품 이름으로 작품을 검색한다.")
+    @ApiParam(name = "작품 이름", required = true, example = "")
+    @PostMapping("/readByName")
+    public ResponseEntity readByName(@RequestBody Map<String, String> requestBody) {
+        String name = requestBody.get("name");
+        return ResponseEntity.ok().body(contentService.readByName(name));
     }
 
     @ApiOperation(value = "작품 수정", notes = "관리자 권한을 가진 관리자가 작품을 수정한다.")

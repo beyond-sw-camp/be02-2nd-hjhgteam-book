@@ -200,6 +200,30 @@ public class ContentService {
         return null;
     }
 
+    public ContentReadRes readByName(String name) {
+        Optional<Content> result = contentRepository.findByName(name);
+
+        if (result.isPresent()) {
+            Content content = result.get();
+
+            ContentImage contentImage = content.getContentImages();
+
+                String filename = contentImage.getFilename();
+
+            ContentReadRes contentReadRes = ContentReadRes.builder()
+                    .id(content.getId())
+                    .classify(content.getClassify())
+                    .name(content.getName())
+                    .categoryId(content.getCategoryId().getId())
+                    .writerId(content.getWriterId().getId())
+                    .filename(filename)
+                    .build();
+
+            return contentReadRes;
+        }
+        return null;
+    }
+
     public void update(ContentUpdateReq contentUpdateReq, MultipartFile uploadFiles) {
         Optional<Content> result = contentRepository.findById(contentUpdateReq.getId());
         Optional<ContentImage> imageResult = contentImageRepository.findByContent_Id(result.get().getId());
