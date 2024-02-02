@@ -3,7 +3,6 @@ package com.example.demo.content.model;
 import com.example.demo.category.model.Category;
 import com.example.demo.collection.model.Collection;
 import com.example.demo.comment.model.Comment;
-import com.example.demo.livetalk.model.Livetalk;
 import com.example.demo.writer.model.Writer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -30,10 +29,6 @@ public class Content {
 
     //Boolean으로 수정
     private Boolean classify;
-
-    @OneToMany(mappedBy = "content")
-    @JsonManagedReference
-    private List<Livetalk> livetalkList = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "content")

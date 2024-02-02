@@ -1,6 +1,5 @@
 package com.example.demo.member.model;
 
-import com.example.demo.chat.model.Chat;
 import com.example.demo.comment.model.Comment;
 import com.example.demo.follow.model.Follow;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -42,9 +41,6 @@ public class Member implements UserDetails {
     @JsonManagedReference
     private List<com.example.demo.collection.model.Collection> collections = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    @JsonManagedReference
-    private List<Chat> chats = new ArrayList<>();
 
     @OneToMany(mappedBy = "member")
     @JsonManagedReference
