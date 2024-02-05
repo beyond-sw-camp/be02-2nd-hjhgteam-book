@@ -1,6 +1,7 @@
 package com.example.demo.comment.service;
 
 import com.example.demo.comment.model.Comment;
+import com.example.demo.comment.model.dto.ContentCommentRes;
 import com.example.demo.comment.model.dto.request.CommentReq;
 import com.example.demo.comment.model.dto.request.UpdateCommentReq;
 import com.example.demo.comment.model.dto.response.CommentRes;
@@ -51,7 +52,13 @@ public class CommentService {
                     .comment(comment.getComment())
                     .rate(comment.getRate())
                     .member(comment.getMember())
-                    .contentId(comment.getContent().getId()).build();
+                    .content(ContentCommentRes.builder()
+                            .contentId(comment.getContent().getId())
+                            .contentName(comment.getContent().getName())
+                            .contentImage(comment.getContent().getContentImages().getFilename())
+                            .contentClassify(comment.getContent().getClassify())
+                            .build())
+                    .build();
             commentResList.add(commentRes);
         }
             return commentResList;
