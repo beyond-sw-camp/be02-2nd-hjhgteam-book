@@ -20,6 +20,9 @@ public class ContentReadRes {
 
     private String filename;
 
+    private String categoryName;
+    private String writerName;
+
 
 
 

@@ -179,8 +179,12 @@ public class ContentService {
     public ContentReadRes read(Long id) {
         Optional<Content> result = contentRepository.findById(id);
 
+
         if (result.isPresent()) {
             Content content = result.get();
+
+            Optional<Category> categoryResult = categoryRepository.findById(content.getCategoryId().getId());
+            Optional<Writer> writerResult = writerRepository.findById(content.getWriterId().getId());
 
             ContentImage contentImage = content.getContentImages();
 
@@ -193,6 +197,8 @@ public class ContentService {
                     .categoryId(content.getCategoryId().getId())
                     .writerId(content.getWriterId().getId())
                     .filename(filename)
+                    .categoryName(categoryResult.get().getName())
+                    .writerName(writerResult.get().getName())
                     .build();
 
             return contentReadRes;
