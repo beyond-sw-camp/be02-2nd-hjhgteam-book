@@ -104,7 +104,7 @@ public class MemberService {
         message.setSubject("[BOOKSPEDIA] 이메일 인증");
         String uuid = UUID.randomUUID().toString();
         String jwt = JwtUtils.generateSignUpAccessToken(memberSignupReq.getEmail(), secretKey, expiredTimeMs);
-        message.setText("http://3.34.199.45:8080/member/verify" +
+        message.setText("http://www.bookspedia.kro.kr/api/member/verify" +
                 "?email="+memberSignupReq.getEmail()
                 +"&uuid="+uuid
                 +"&jwt="+jwt
