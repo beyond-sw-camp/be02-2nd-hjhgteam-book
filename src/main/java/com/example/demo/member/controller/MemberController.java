@@ -78,7 +78,7 @@ public class MemberController {
         if (imageFile != null)
             path = service.saveFile(imageFile);
 
-            service.update(memberUpdateReq, path);
+        service.update(memberUpdateReq, path);
 
         return ResponseEntity.ok().body("ok");
     }

@@ -12,5 +12,5 @@ public class CommentRes {
     private String comment;
     private Integer rate;
     private Member member;
-    private Content content;
+    private Long contentId;
 }

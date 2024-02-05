@@ -51,7 +51,7 @@ public class CommentService {
                     .comment(comment.getComment())
                     .rate(comment.getRate())
                     .member(comment.getMember())
-                    .content(comment.getContent()).build();
+                    .contentId(comment.getContent().getId()).build();
             commentResList.add(commentRes);
         }
             return commentResList;
