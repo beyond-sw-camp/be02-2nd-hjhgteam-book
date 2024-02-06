@@ -55,6 +55,7 @@ public class CollectionService {
 //                    .categoryId(collection.getContentInCollect().getCategoryId().getId())
 //                    .writerId(collection.getContentInCollect().getWriterId().getId())
                     .contentImage(collection.getContentInCollect().getContentImages().getFilename())
+                    .memberId(collection.getMember().getId())
                     .build();
             collectionReadResList.add(collectionReadRes);
         }

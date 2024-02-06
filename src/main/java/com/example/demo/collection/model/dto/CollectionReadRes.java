@@ -20,6 +20,8 @@ public class CollectionReadRes {
 //    String writerId;
     String contentImage;
 
+    Long memberId;
+
 
 
 
